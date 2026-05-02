@@ -9,9 +9,9 @@ public class Door : MonoBehaviour
         if (triggered) return;
         triggered = true;
 
-        if (GameManager.Instance != null)
+        if (GameManager.Instance != null && GameManager.Instance.RestartCount<3)
             GameManager.Instance.RestartLevel();
         else
-            Debug.LogError("GameManager.Instance == null");
+            Debug.Log("GameManager.Instance == null or RestartCount<3");
     }
 }

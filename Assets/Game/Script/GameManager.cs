@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,10 +9,7 @@ public class GameManager : MonoBehaviour
     private static int restartCount = 0;
     public int RestartCount => restartCount;
 
-    // Больше не держим прямую ссылку на GolemController
-    // public GolemController golemController; // УБИРАЕМ эту строку
-
-    private GolemController.GolemForm? pendingForm = null; // форма, которую нужно установить после загрузки
+    private GolemController.GolemForm? pendingForm = null;
 
     private void Awake()
     {
@@ -19,7 +17,7 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            SceneManager.sceneLoaded += OnSceneLoaded;   // подписываемся один раз
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
         else
         {
@@ -35,9 +33,13 @@ public class GameManager : MonoBehaviour
 
     public void RestartLevel()
     {
-        restartCount++;
+        StartCoroutine(RestartCoroutine());
+    }
 
-        // Определяем, в какую форму нужно превратиться после перезапуска
+    private IEnumerator RestartCoroutine()
+    {
+        restartCount++;
+        
         switch (restartCount)
         {
             case 1:
@@ -54,31 +56,38 @@ public class GameManager : MonoBehaviour
                 break;
             default:
                 Debug.Log($"Смерть №{restartCount}: без особых действий");
-                pendingForm = null; // ничего не меняем
+                pendingForm = null;
                 break;
         }
-
+        
+        if (PostProcessFader.Instance != null)
+        {
+            PostProcessFader.Instance.FadeOut();
+            yield return new WaitForSeconds(PostProcessFader.Instance.FadeDuration);
+        }
+        
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (pendingForm == null)
-            return;
-
-        // Находим Голема в новой сцене
-        GolemController golem = FindObjectOfType<GolemController>();
-        if (golem != null)
+        if (pendingForm != null)
         {
-            golem.ChangeForm(pendingForm.Value);
-            Debug.Log($"После загрузки применена форма: {pendingForm.Value}");
+            GolemController golem = FindObjectOfType<GolemController>();
+            if (golem != null)
+            {
+                golem.ChangeForm(pendingForm.Value);
+                Debug.Log($"После загрузки применена форма: {pendingForm.Value}");
+            }
+            else
+            {
+                Debug.LogError("GolemController не найден в сцене!");
+            }
+            pendingForm = null;
         }
-        else
-        {
-            Debug.LogError("GolemController не найден в сцене!");
-        }
-
-        pendingForm = null; // сбрасываем
+        
+        if (PostProcessFader.Instance != null)
+            PostProcessFader.Instance.FadeIn();
     }
 
     public void ResetCounter()

@@ -61,7 +61,7 @@ public class GolemController : MonoBehaviour
         }
 
 
-        // Отражение персонажа (кроме бабочки – ей можно лететь в любую сторону)
+
         if (currentForm != GolemForm.Butterfly && horizontalInput != 0)
             Flip(horizontalInput > 0);
     }
