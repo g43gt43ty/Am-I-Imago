@@ -4,6 +4,11 @@ public class GolemController : MonoBehaviour
 {
     [Header("Текущая форма")] public GolemForm currentForm = GolemForm.Titan;
     [SerializeField]private GameObject TitanTaran;
+    [SerializeField]private SpriteRenderer spriteRenderer;
+    public Sprite titanSprite;
+    public Sprite strangerSprite;
+    public Sprite chrysalisSprite;
+    public Sprite butterflySprite;
 
     [Header("Общие настройки движения")] [SerializeField]
     private float titanSpeed = 2.5f;
@@ -76,15 +81,19 @@ public class GolemController : MonoBehaviour
         {
             case GolemForm.Titan:
                 TitanMovement();
+                spriteRenderer.sprite = titanSprite;
                 break;
             case GolemForm.Stranger:
                 StrangerMovement();
+                spriteRenderer.sprite = strangerSprite;
                 break;
             case GolemForm.Chrysalis:
                 ChrysalisMovement();
+                spriteRenderer.sprite = chrysalisSprite;
                 break;
             case GolemForm.Butterfly:
                 ButterflyMovement();
+                spriteRenderer.sprite = butterflySprite;
                 break;
         }
     }

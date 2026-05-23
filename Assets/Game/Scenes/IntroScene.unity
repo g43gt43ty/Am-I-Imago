@@ -343,6 +343,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1476460858140933375, guid: a8abdc318414c444d9b98440e9bd64a6, type: 3}
+      propertyPath: textEntries.Array.data[0].text
+      value: HELLO
+      objectReference: {fileID: 0}
+    - target: {fileID: 1476460858140933375, guid: a8abdc318414c444d9b98440e9bd64a6, type: 3}
+      propertyPath: textEntries.Array.data[1].text
+      value: FIND EXIT
+      objectReference: {fileID: 0}
+    - target: {fileID: 1476460858140933375, guid: a8abdc318414c444d9b98440e9bd64a6, type: 3}
+      propertyPath: textEntries.Array.data[2].text
+      value: OR...
+      objectReference: {fileID: 0}
+    - target: {fileID: 1476460858140933375, guid: a8abdc318414c444d9b98440e9bd64a6, type: 3}
+      propertyPath: textEntries.Array.data[3].text
+      value: DONT
+      objectReference: {fileID: 0}
     - target: {fileID: 2177851961981734794, guid: a8abdc318414c444d9b98440e9bd64a6, type: 3}
       propertyPath: m_Pivot.x
       value: 0
